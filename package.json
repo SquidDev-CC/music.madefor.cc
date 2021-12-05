@@ -1,0 +1,33 @@
+{
+  "name": "music.madefor.cc",
+  "version": "1.0.0",
+  "description": "Converts audio files to the DFPWM1a format",
+  "author": "SquidDev",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@rollup/plugin-html": "^0.2.4",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-typescript": "^8.0.0",
+    "@tsconfig/svelte": "^2.0.0",
+    "autoprefixer": "^10.4.0",
+    "rollup": "^2.3.4",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0",
+    "svelte-check": "^2.0.0",
+    "svelte-preprocess": "^4.0.0",
+    "tailwindcss": "^2.2.19",
+    "tslib": "^2.0.0",
+    "typescript": "^4.0.0"
+  },
+  "prettier": {
+    "printWidth": 120
+  }
+}

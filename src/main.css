@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+@layer utilities {
+  .link-like {
+    @apply text-blue-700 hover:text-blue-900 active:text-blue-900 focus:text-blue-900 hover:underline;
+  }
+
+  .prose {
+    @apply leading-6;
+  }
+
+  .prose a {
+    @apply link-like;
+  }
+
+  .prose p {
+    @apply my-5;
+  }
+}

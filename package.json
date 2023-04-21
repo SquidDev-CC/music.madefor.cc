@@ -29,5 +29,8 @@
   },
   "prettier": {
     "printWidth": 120
-  }
+  },
+  "files": [
+    "_build"
+  ]
 }

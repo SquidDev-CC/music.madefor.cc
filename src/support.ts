@@ -27,7 +27,7 @@ export const save = (filename: string, blob: Blob): void => {
 
 /** Convert a value to a SI-suffixed number.  */
 export const toSI = (size: number): string => {
-  if(size >= 1024 * 1204) return `${(size / (1024 * 1024)).toFixed(2)} MiB`;
+  if(size >= 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MiB`;
   if(size >= 1024) return `${(size / 1024).toFixed(2)} KiB`;
   return `${size} B`;
 }

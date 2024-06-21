@@ -1,5 +1,5 @@
-<script type="text/typescript">
-  import { AudioFile, FileState } from "./types";
+<script lang="ts">
+  import { type AudioFile, FileState } from "./types";
   import { classNames, save, toSI } from "./support";
   import convert from "./convert";
 
@@ -27,7 +27,7 @@
   // File upload element
   let fileElement: HTMLInputElement;
   const onFileUpload = () => {
-    for (const file of fileElement.files) addFile(file);
+    for (const file of fileElement.files ?? []) addFile(file);
     files = files;
   };
 
@@ -42,11 +42,12 @@
     isDragging = false;
 
     event.preventDefault();
+    if (!event.dataTransfer) return;
 
     if (event.dataTransfer.items) {
       for (let i = 0; i < event.dataTransfer.items.length; i++) {
         const item = event.dataTransfer.items[i];
-        if (item.kind === "file") addFile(item.getAsFile());
+        if (item.kind === "file") addFile(item.getAsFile()!);
       }
     } else {
       for (const file of event.dataTransfer.files) addFile(file);
@@ -62,20 +63,24 @@
   };
 
   const toColour = (state: FileState): string => {
-    if(state == FileState.Error) return "bg-red-200";
-    if(state == FileState.Finished) return "bg-green-100";
+    if (state == FileState.Error) return "bg-red-200";
+    if (state == FileState.Finished) return "bg-green-100";
     return "bg-blue-100";
-  }
+  };
 </script>
 
 <div
   class="w-full h-full grid justify-center content-start"
+  role="form"
   on:drop={onDrop}
   on:dragover={onDrag}
   on:dragleave={onDrag}
 >
   <div
-    class={classNames("mt-20 max-w-4xl box-border py-4 px-2 border-4", isDragging ? "border-blue-400" : "border-gray-200")}
+    class={classNames(
+      "mt-20 max-w-4xl box-border py-4 px-2 border-4",
+      isDragging ? "border-blue-400" : "border-gray-200",
+    )}
   >
     <h1 class="text-4xl mb-4 text-gray-700">ComputerCraft Music Converter</h1>
 
@@ -100,7 +105,8 @@
                 <div class="text-gray-600">Decoding</div>
               {:else if state.state == FileState.Finished}
                 <div>
-                  <button class="link-like" type="button" on:click={() => saveFile(name, state.result)}>Download</button>
+                  <button class="link-like" type="button" on:click={() => saveFile(name, state.result)}>Download</button
+                  >
                   <span class="text-gray-600">({toSI(state.result.byteLength)})</span>
                 </div>
               {:else if state.state == FileState.Error}

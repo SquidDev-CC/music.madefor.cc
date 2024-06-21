@@ -1,4 +1,4 @@
-import { AudioState, FileState } from "../types"
+import { type AudioState, FileState } from "../types"
 
 const SAMPLE_RATE = 48000;
 const PREC = 10;

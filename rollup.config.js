@@ -1,13 +1,14 @@
 import html, { makeHtmlAttributes } from "@rollup/plugin-html";
 import resolve from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import autoprefixer from "autoprefixer";
+import { spawn } from "child_process";
 import { promises as fs } from "fs";
 import livereload from 'rollup-plugin-livereload';
 import postcss from "rollup-plugin-postcss";
 import svelte from 'rollup-plugin-svelte';
-import { terser } from 'rollup-plugin-terser';
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 import tailwindcss from "tailwindcss";
 
 const production = !process.env.ROLLUP_WATCH;
@@ -22,7 +23,7 @@ function serve() {
   return {
     writeBundle() {
       if (server) return;
-      server = require('child_process').spawn('python', ['-m', 'http.server', '8080', '-d', '_build'], {
+      server = spawn('python', ['-m', 'http.server', '8080', '-d', '_build'], {
         stdio: ['ignore', 'inherit', 'inherit'],
         shell: true
       });
@@ -33,6 +34,7 @@ function serve() {
   };
 }
 
+/** @type {import("rollup").RollupOptions} */
 export default {
   input: 'src/main.ts',
   output: {
@@ -41,11 +43,19 @@ export default {
     entryFileNames: "[name]-[hash].js",
 
     sourcemap: !production,
-    preferConst: true,
     externalLiveBindings: true,
     freeze: true,
+    generatedCode: {
+      constBindings: true,
+      arrowFunctions: true,
+    }
   },
   plugins: [
+    typescript({
+      sourceMap: !production,
+      inlineSources: !production
+    }),
+
     svelte({
       preprocess: sveltePreprocess({ sourceMap: !production }),
       compilerOptions: {
@@ -66,10 +76,6 @@ export default {
     resolve({
       browser: true,
       dedupe: ['svelte']
-    }),
-    typescript({
-      sourceMap: !production,
-      inlineSources: !production
     }),
 
     html({

@@ -1,5 +1,5 @@
 import { convertAudio } from "./audio";
-import { AudioState, FileState } from "../types";
+import { type AudioState, FileState } from "../types";
 
 const queue: Array<{
   contents: ArrayBuffer,
@@ -12,7 +12,7 @@ const processQueue = async (): Promise<void> => {
 
   running = true;
   while (queue.length > 0) {
-    const task = queue.shift();
+    const task = queue.shift()!;
     try {
       const result = await convertAudio(task.contents, task.callback);
       task.callback({ state: FileState.Finished, result });

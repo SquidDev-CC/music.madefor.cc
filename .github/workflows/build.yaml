@@ -1,0 +1,30 @@
+on: [push, pull_request]
+
+name: Build
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Clone repository
+      uses: actions/checkout@v4
+
+    - name: 📥 Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 21
+
+    - name: 📥 Download dependencies
+      run: npm ci
+
+    - name: ⚒️ Build
+      run: npm run -s build
+
+    - name: 📤 Upload site
+      uses: actions/upload-artifact@v4
+      with:
+        name: Website
+        path: _build
+        retention-days: 1
